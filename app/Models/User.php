@@ -30,4 +30,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function organizations(){
+        return $this->hasMany(Organization::class);
+    }
+
 }
