@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DepartmentLevelController;
+use App\Http\Controllers\JobLevelController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,5 @@ Route::middleware(['auth:sanctum'])->group(function(){
 
     Route::apiResource('department-levels', DepartmentLevelController::class);
 
+    Route::apiResource('job-levels', JobLevelController::class);
 });
