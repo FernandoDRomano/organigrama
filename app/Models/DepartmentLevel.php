@@ -10,4 +10,12 @@ class DepartmentLevel extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'hierarchy'];
+
+    /*
+     * RELACIONS 
+     */
+
+    public function departments(){
+        return $this->hasMany(Department::class);
+    }
 }

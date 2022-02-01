@@ -11,8 +11,16 @@ class Organization extends Model
 
     protected $fillable = ['name', 'user_id'];
 
+    /*
+     * RELACIONS 
+     */
+
     public function user(){
         return $this->belongsTo(User::class);
+    }
+
+    public function departments(){
+        return $this->hasMany(Department::class);
     }
 
 }
