@@ -7,6 +7,7 @@ use App\Models\JobLevel;
 use App\Models\Department;
 use App\Models\Organization;
 use App\Models\DepartmentLevel;
+use App\Models\Employe;
 use Illuminate\Database\Seeder;
 use JetBrains\PhpStorm\Deprecated;
 
@@ -33,7 +34,9 @@ class DatabaseSeeder extends Seeder
 
         User::factory(3)
             ->has(
-                Organization::factory()->count(1))
+                Organization::factory()
+                ->has(Employe::factory()->count(10))
+                ->count(1))
             ->create();
         
         for ($i=1; $i <= 10 ; $i++) { 
