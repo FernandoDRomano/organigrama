@@ -26,4 +26,8 @@ class Department extends Model
     public function level(){
         return $this->belongsTo(DepartmentLevel::class, 'department_level_id');
     }
+
+    public function jobs(){
+        return $this->hasMany(Job::class);
+    }
 }

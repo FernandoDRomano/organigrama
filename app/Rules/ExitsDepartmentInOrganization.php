@@ -10,14 +10,15 @@ use function PHPUnit\Framework\isNull;
 
 class ExitsDepartmentInOrganization implements Rule, DataAwareRule
 {
+    protected $organization;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($organization)
     {
-        //
+        $this->organization = $organization;
     }
 
     /**
@@ -40,8 +41,11 @@ class ExitsDepartmentInOrganization implements Rule, DataAwareRule
         //     return true;
         // }
         
-        $collect = collect(Organization::findOrFail($this->data['organization_id'])->departments);
-        
+        // $collect = collect(Organization::findOrFail($this->data['organization_id'])->departments);
+        // $collect = collect(Organization::findOrFail($this->organization)->departments);
+
+        $collect = collect($this->organization->departments);
+
         if ($collect->contains('id', $value)) {
             return true;
         }

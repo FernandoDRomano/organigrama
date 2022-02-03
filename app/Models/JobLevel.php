@@ -10,4 +10,12 @@ class JobLevel extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'hierarchy'];
+
+    /**
+     * RELATIONS
+     */
+
+    public function jobs(){
+        return $this->hasMany(Job::class);
+    }
 }

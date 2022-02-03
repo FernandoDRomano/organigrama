@@ -2,14 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\Job;
 use App\Models\User;
+use App\Models\Employe;
 use App\Models\JobLevel;
 use App\Models\Department;
 use App\Models\Organization;
 use App\Models\DepartmentLevel;
-use App\Models\Employe;
 use Illuminate\Database\Seeder;
-use JetBrains\PhpStorm\Deprecated;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 
 class DatabaseSeeder extends Seeder
 {
@@ -68,7 +69,22 @@ class DatabaseSeeder extends Seeder
                 "department_id" => $id
             ]);
         }
-        
+
+        $departments = Department::all();
+
+        foreach ($departments as $department) {
+
+            Job::factory()
+                ->count(3)->state(
+                    new Sequence(
+                        ['job_level_id' => '1'],
+                        ['job_level_id' => '2'],
+                        ['job_level_id' => '3'],
+                    ))
+                ->for($department)
+                ->create();
+
+        }        
 
     }
 }

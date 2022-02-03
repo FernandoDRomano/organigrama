@@ -27,4 +27,8 @@ class Organization extends Model
         return $this->hasMany(Employe::class);
     }
 
+    public function jobs(){
+        return $this->hasManyThrough(Job::class, Department::class);
+    }
+
 }

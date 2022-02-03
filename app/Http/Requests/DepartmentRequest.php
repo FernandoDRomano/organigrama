@@ -51,7 +51,6 @@ class DepartmentRequest extends FormRequest
     public function rules()
     {
         $this->initValues();
-
         return [
             "name" => "required|min:3",
             "organization_id" => [
@@ -72,7 +71,7 @@ class DepartmentRequest extends FormRequest
                 "bail",
                 "required_unless:department_level_id,!=,1",
                 "nullable",
-                new ExitsDepartmentInOrganization,
+                new ExitsDepartmentInOrganization($this->organization),
                 new SelectedDepartmentIfLevelIsGreaterThanOne
             ]            
         ];
