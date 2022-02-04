@@ -4,20 +4,18 @@ namespace App\Rules;
 
 use App\Models\Department;
 use App\Models\Job;
+use App\Models\Organization;
 use Illuminate\Contracts\Validation\Rule;
 
-class JobLevelJustContainOneJobForLevel implements Rule
+class ValidateJobInDepartmentInOrganization implements Rule
 {
+    protected $organization;
     protected $department;
     protected $job;
-    protected $count;
-    /**
-     * Create a new rule instance.
-     *
-     * @return void
-     */
-    public function __construct(Department $department = null, Job $job = null)
+
+    public function __construct(Organization $organization = null, Department $department = null, Job $job = null)
     {
+        $this->organization = $organization;
         $this->department = $department;
         $this->job = $job;
     }
@@ -30,14 +28,8 @@ class JobLevelJustContainOneJobForLevel implements Rule
      * @return bool
      */
     public function passes($attribute, $value)
-    {
-        if ($this->job && $this->job->job_level_id == $value) {
-            return true;
-        }
-
-        $this->count = $this->department->jobs()->where('job_level_id', $value)->count();
-        
-        if ($this->count < 1) {
+    {        
+        if ($this->organization->id === $this->department->organization_id && $this->department->id === $this->job->department_id) {
             return true;
         }
 
@@ -51,6 +43,6 @@ class JobLevelJustContainOneJobForLevel implements Rule
      */
     public function message()
     {
-        return 'The :attribute contains more one job in this level';
+        return 'The :attribute is invalid because is not contains in the department and the organization';
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\DepartmentLevelController;
 use App\Http\Controllers\EmployeController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobLevelController;
+use App\Http\Controllers\ObligationController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -39,4 +40,6 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource('organizations/{organization}/employes', EmployeController::class);
 
     Route::apiResource('organizations/{organization}/departments/{department}/jobs', JobController::class);
+
+    Route::apiResource('organizations/{organization}/departments/{department}/jobs/{job}/obligations', ObligationController::class);
 });

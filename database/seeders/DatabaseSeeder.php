@@ -9,6 +9,7 @@ use App\Models\JobLevel;
 use App\Models\Department;
 use App\Models\Organization;
 use App\Models\DepartmentLevel;
+use App\Models\Obligation;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 
@@ -82,6 +83,7 @@ class DatabaseSeeder extends Seeder
                         ['job_level_id' => '3'],
                     ))
                 ->for($department)
+                ->has(Obligation::factory()->count(5))
                 ->create();
 
         }        

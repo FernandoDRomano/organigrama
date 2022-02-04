@@ -26,4 +26,8 @@ class Job extends Model
     public function organization(){
         return $this->hasOneThrough(Organization::class, Department::class);
     }
+
+    public function obligations(){
+        return $this->hasMany(Obligation::class);
+    }
 }

@@ -2,21 +2,20 @@
 
 namespace App\Rules;
 
-use App\Models\Department;
+use App\Models\Job;
 use Illuminate\Contracts\Validation\Rule;
 
-class DepartmentContainsValidId implements Rule
+class JobContainValidId implements Rule
 {
+    protected $job;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    protected $department;
-
-    public function __construct(Department $department = null)
+    public function __construct(Job $job = null)
     {
-        $this->department = $department;
+        $this->job = $job;
     }
 
     /**
@@ -28,7 +27,7 @@ class DepartmentContainsValidId implements Rule
      */
     public function passes($attribute, $value)
     {
-        return $this->department->id == $value;
+        return $this->job->id == $value;
     }
 
     /**
