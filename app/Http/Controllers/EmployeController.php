@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\EmployeRequest;
 use App\Models\Employe;
 use App\Models\Organization;
-use Illuminate\Http\Request;
 
 class EmployeController extends Controller
 {
 
     public function index(Organization $organization)
     {
+        $this->authorize('viewAny', [Employe::class, $organization]);
+
         return response()->json([
             "data" => $organization->employes
         ], 200);
@@ -19,6 +20,8 @@ class EmployeController extends Controller
 
     public function store(EmployeRequest $request, Organization $organization)
     {
+        $this->authorize('create', [Employe::class, $organization]);
+
         $employe = Employe::create($request->all());
 
         return response()->json([
@@ -29,46 +32,33 @@ class EmployeController extends Controller
 
     public function show(Organization $organization, Employe $employe)
     {
-        if ($organization->id === $employe->organization_id) {
-            return response()->json([
-                "data" => $employe
-            ], 200);
-        }
-
+        $this->authorize('view', [$employe, $organization]);
+            
         return response()->json([
-            "message" => "The employe id is does not contains in organization"
-        ]);
+            "data" => $employe
+        ], 200);
     }
 
     public function update(EmployeRequest $request, Organization $organization, Employe $employe)
-    {
-        if ($organization->id === $employe->organization_id) {
-            
-            $employe->fill($request->all())->save();
+    {           
+        $this->authorize('update', [$employe, $organization]);
+         
+        $employe->fill($request->all())->save();
            
-            return response()->json([
-                "message" => "Employe updated!!",
-                "data" => $employe
-            ], 200);
-        }
-
         return response()->json([
-            "message" => "The employe id is does not contains in organization"
-        ]);
+            "message" => "Employe updated!!",
+            "data" => $employe
+        ], 200);
     }
 
     public function destroy(Organization $organization, Employe $employe)
     {
-        if ($organization->id === $employe->organization_id) {
-            $employe->delete();
+        $this->authorize('delete', [$employe, $organization]);
 
-            return response()->json([
-                "message" => "Employe deleted!!"
-            ], 200);
-        }
+        $employe->delete();
 
         return response()->json([
-            "message" => "The employe id is does not contains in organization"
-        ]);
+            "message" => "Employe deleted!!"
+        ], 204);
     }
 }
