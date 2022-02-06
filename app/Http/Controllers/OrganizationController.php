@@ -10,7 +10,7 @@ class OrganizationController extends Controller
     
     public function index(){
         return response()->json([
-            "data" => Organization::with('user')->get()
+            "data" => auth()->user()->organizations
         ], 200);
     }
 
@@ -27,12 +27,16 @@ class OrganizationController extends Controller
     }
 
     public function show(Organization $organization){
+        $this->authorize('view', $organization);
+
         return response()->json([
             "data" => $organization
         ], 200);
     }
 
     public function update(OrganizationRequest $request, Organization $organization){
+        $this->authorize('update', $organization);
+
         $organization->name = $request->name;
         $organization->save();
 
@@ -43,11 +47,13 @@ class OrganizationController extends Controller
     }
 
     public function destroy(Organization $organization){
+        $this->authorize('delete', $organization);
+
         $organization->delete();
 
         return response()->json([
             "message" => "Organization delete!!",
-        ], 200);
+        ], 204);
     }
 
 }
