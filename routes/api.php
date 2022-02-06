@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssignController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DepartmentLevelController;
 use App\Http\Controllers\EmployeController;
@@ -42,4 +43,7 @@ Route::middleware(['auth:sanctum'])->group(function(){
     Route::apiResource('organizations/{organization}/departments/{department}/jobs', JobController::class);
 
     Route::apiResource('organizations/{organization}/departments/{department}/jobs/{job}/obligations', ObligationController::class);
+
+    Route::post('organizations/{organization}/assign', [AssignController::class, 'post']);
+    Route::delete('organizations/{organization}/assign', [AssignController::class, 'destroy']);
 });

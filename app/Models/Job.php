@@ -30,4 +30,8 @@ class Job extends Model
     public function obligations(){
         return $this->hasMany(Obligation::class);
     }
+
+    public function employes(){
+        return $this->belongsToMany(Employe::class)->withTimestamps();
+    }
 }
