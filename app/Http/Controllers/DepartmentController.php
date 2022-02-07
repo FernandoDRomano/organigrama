@@ -9,15 +9,17 @@ use App\Models\Organization;
 class DepartmentController extends Controller
 {
     
-    public function index(Organization $organization)
-    {
+    public function index(Organization $organization){
+        $this->authorize('viewAny', [Department::class, $organization]);
+
         return response()->json([
             "data" => $organization->departments
         ], 200);
     }
 
-    public function store(Organization $organization, DepartmentRequest $request)
-    {
+    public function store(Organization $organization, DepartmentRequest $request){
+        $this->authorize('create', [Department::class, $organization]);
+
         $department = Department::create($request->all());
 
         return response()->json([
@@ -27,18 +29,16 @@ class DepartmentController extends Controller
     }
 
     public function show(Organization $organization, Department $department){
-        if ($organization->id === $department->organization_id) {
-            return response()->json([
-                "data" => $department
-            ], 200);
-        }
+        $this->authorize('view', [$department, $organization]);
 
         return response()->json([
-            "message" => "The department id is invalid for organization"
-        ], 404);
+            "data" => $department
+        ], 200);
     }
 
     public function update(Organization $organization, Department $department, DepartmentRequest $request){
+        $this->authorize('update', [$department, $organization]);
+
         $department->fill($request->all())->save();
             
         return response()->json([
@@ -48,18 +48,13 @@ class DepartmentController extends Controller
     }
 
     public function destroy(Organization $organization, Department $department){
-        if ($organization->id === $department->organization_id) {
-            $department->delete();
+        $this->authorize('delete', [$department, $organization]);
 
-            return response()->json([
-            "message" => "Department deleted!!"
-            ], 200);
-        }
+        $department->delete();
 
         return response()->json([
-            "message" => "The department id is does not correspond with organization id"
-        ], 403);
-
+            "message" => "Department deleted!!"
+        ], 204);
     }
 
 }
