@@ -12,6 +12,8 @@ class JobController extends Controller
 
     public function index(Organization $organization, Department $department)
     {
+        $this->authorize('viewAny', [Job::class, $organization, $department]);
+
         return response()->json([
             "data" =>  $department->jobs
         ], 200);
@@ -19,6 +21,8 @@ class JobController extends Controller
 
     public function store(JobRequest $request, Organization $organization, Department $department)
     {
+        $this->authorize('create', [Job::class, $organization, $department]);
+
         $job = Job::create($request->all());
         return response()->json([
             "message" => "Job created!!",
@@ -29,19 +33,17 @@ class JobController extends Controller
 
     public function show(Organization $organization, Department $department, Job $job)
     {
-        if ($organization->id === $department->organization_id && $department->id === $job->department_id) {
-            return response()->json([
-                "data" => $job
-            ], 200);
-        }
+        $this->authorize('view', [$job, $organization, $department]);
 
         return response()->json([
-            "message" => "The job is do not contains in the department and organization"
-        ]);
+            "data" => $job
+        ], 200);
     }
 
     public function update(JobRequest $request, Organization $organization, Department $department, Job $job)
     {
+        $this->authorize('update', [$job, $organization, $department]);
+
         $job->fill($request->all())->save();
         return response()->json([
             "message" => "Job updated!!",
@@ -51,15 +53,11 @@ class JobController extends Controller
 
     public function destroy(Organization $organization, Department $department, Job $job)
     {
-        if ($organization->id === $department->organization_id && $department->id === $job->department_id) {
-            $job->delete();
-            return response()->json([
-                "message" => "Job deleted!!"
-            ], 200);
-        }
+        $this->authorize('delete', [$job, $organization, $department]);
 
+        $job->delete();
         return response()->json([
-            "message" => "The job is do not contains in the department and organization"
-        ]);
+            "message" => "Job deleted!!"
+        ], 204);
     }
 }

@@ -7,6 +7,7 @@ use App\Models\Employe;
 use App\Models\Organization;
 use App\Policies\DepartmentPolicy;
 use App\Policies\EmployePolicy;
+use App\Policies\JobPolicy;
 use App\Policies\OrganizationPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -22,7 +23,8 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         Organization::class => OrganizationPolicy::class,
         Employe::class => EmployePolicy::class,
-        Department::class => DepartmentPolicy::class
+        Department::class => DepartmentPolicy::class,
+        Job::class => JobPolicy::class
     ];
 
     /**
