@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Job;
 use App\Models\Employe;
 use App\Models\Organization;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\AssignRequest;
+use App\Models\Assign;
 
 class AssignController extends Controller
 {
 
     public function post(AssignRequest $request, Organization $organization)
     {
+        $this->authorize('create', [Assign::class, $organization]);
+
         DB::beginTransaction();
         try {
             Employe::find($request->employe_id)->jobs()->attach($request->job_id);
@@ -34,6 +36,8 @@ class AssignController extends Controller
 
     public function destroy(AssignRequest $request, Organization $organization)
     {
+        $this->authorize('delete', [new Assign(), $organization]);
+
         DB::beginTransaction();
         try {
             Employe::find($request->employe_id)->jobs()->detach($request->job_id);

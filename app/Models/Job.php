@@ -32,6 +32,6 @@ class Job extends Model
     }
 
     public function employes(){
-        return $this->belongsToMany(Employe::class)->withTimestamps();
+        return $this->belongsToMany(Employe::class)->using(Assign::class)->withTimestamps();
     }
 }

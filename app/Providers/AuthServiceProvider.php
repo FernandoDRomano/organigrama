@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Assign;
 use App\Models\Department;
 use App\Models\Employe;
 use App\Models\Obligation;
 use App\Models\Organization;
+use App\Policies\AssignPolicy;
 use App\Policies\DepartmentPolicy;
 use App\Policies\EmployePolicy;
 use App\Policies\JobPolicy;
@@ -27,7 +29,8 @@ class AuthServiceProvider extends ServiceProvider
         Employe::class => EmployePolicy::class,
         Department::class => DepartmentPolicy::class,
         Job::class => JobPolicy::class,
-        Obligation::class => ObligationPolicy::class
+        Obligation::class => ObligationPolicy::class,
+        Assign::class => AssignPolicy::class
     ];
 
     /**
