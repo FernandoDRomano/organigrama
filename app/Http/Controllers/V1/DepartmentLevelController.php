@@ -4,39 +4,44 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\DepartmentLevelRequest;
+use App\Http\Resources\DepartmentLevelResource;
 use App\Models\DepartmentLevel;
 
 class DepartmentLevelController extends Controller
 {
 
     public function index(){
-        return response()->json([
-            "data" => DepartmentLevel::all()
-        ], 200);
+        $departmentLevels = DepartmentLevel::paginate(10);
+
+        return (DepartmentLevelResource::collection($departmentLevels))
+               ->additional(["message" => "Department levels all!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function store(DepartmentLevelRequest $request){
         $departmentLevel = DepartmentLevel::create($request->all());
 
-        return response()->json([
-            "message" => "Department level created!!",
-            "data" => $departmentLevel
-        ], 201);
+        return (DepartmentLevelResource::make($departmentLevel))
+               ->additional(["message" => "Department level created!!"])
+               ->response()
+               ->setStatusCode(201);
     }
 
     public function show(DepartmentLevel $departmentLevel){
-        return response()->json([
-            "data" => $departmentLevel
-        ], 200);
+        return (DepartmentLevelResource::make($departmentLevel))
+               ->additional(["message" => "Department level!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function update(DepartmentLevel $departmentLevel, DepartmentLevelRequest $request){
         $departmentLevel->fill($request->all())->save();
     
-        return response()->json([
-            "message" => "Department level updated!!",
-            "data" => $departmentLevel
-        ], 200);
+        return (DepartmentLevelResource::make($departmentLevel))
+               ->additional(["message" => "Department level updated!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function destroy(DepartmentLevel $departmentLevel){
@@ -44,7 +49,7 @@ class DepartmentLevelController extends Controller
 
         return response()->json([
             "message" => "Department level deleted!!"
-        ], 200);
+        ], 204);
     }
 
 }
