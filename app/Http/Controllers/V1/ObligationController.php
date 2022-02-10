@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
+use App\Http\Controllers\Controller;
 use App\Models\Job;
 use App\Models\Department;
 use App\Models\Obligation;
 use App\Models\Organization;
-use App\Http\Requests\ObligationRequest;
+use App\Http\Requests\V1\ObligationRequest;
 
 class ObligationController extends Controller
 {

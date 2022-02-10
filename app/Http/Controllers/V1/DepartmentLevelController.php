@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
-use App\Http\Requests\DepartmentLevelRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\DepartmentLevelRequest;
 use App\Models\DepartmentLevel;
 
 class DepartmentLevelController extends Controller

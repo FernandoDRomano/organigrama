@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
-use App\Http\Requests\EmployeRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\EmployeRequest;
 use App\Models\Employe;
 use App\Models\Organization;
 

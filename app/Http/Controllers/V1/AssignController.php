@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
+use App\Http\Controllers\Controller;
 use App\Models\Employe;
 use App\Models\Organization;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\AssignRequest;
+use App\Http\Requests\V1\AssignRequest;
 use App\Models\Assign;
 
 class AssignController extends Controller

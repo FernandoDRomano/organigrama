@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\V1;
 
+use App\Http\Controllers\Controller;
 use App\Models\Job;
 use App\Models\Department;
 use App\Models\Organization;
-use App\Http\Requests\JobRequest;
+use App\Http\Requests\V1\JobRequest;
 
 class JobController extends Controller
 {
