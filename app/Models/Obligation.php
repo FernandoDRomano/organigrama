@@ -12,6 +12,13 @@ class Obligation extends Model
     protected $fillable = ['description', 'job_id'];
 
     /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    protected $with = ['job'];
+
+    /**
      * RELATIONS
      */
 

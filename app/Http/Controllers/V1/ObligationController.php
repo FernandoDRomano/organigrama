@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Obligation;
 use App\Models\Organization;
 use App\Http\Requests\V1\ObligationRequest;
+use App\Http\Resources\V1\ObligationResource;
 
 class ObligationController extends Controller
 {
@@ -16,9 +17,12 @@ class ObligationController extends Controller
     {
         $this->authorize('viewAny', [Obligation::class, $organization, $department, $job]);
 
-        return response()->json([
-            "data" => $job->obligations
-        ], 200);
+        $obligations = $job->obligations()->orderBy('id', 'DESC')->paginate(10);
+        
+        return (ObligationResource::collection($obligations))
+               ->additional(["message" => "Obligations all!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function store(ObligationRequest $request, Organization $organization, Department $department, Job $job)
@@ -27,19 +31,20 @@ class ObligationController extends Controller
 
         $obligation = Obligation::create($request->all());
 
-        return response()->json([
-            "message" => "Obligation created!!",
-            "data" => $obligation
-         ], 201);
+        return (ObligationResource::make($obligation))
+               ->additional(["message" => "Obligation created!!"])
+               ->response()
+               ->setStatusCode(201);
     }
 
     public function show(Organization $organization, Department $department, Job $job, Obligation $obligation)
     {
         $this->authorize('view', [$obligation, $organization, $department, $job]);
 
-        return response()->json([
-            "data" => $obligation
-        ], 200);
+        return (ObligationResource::make($obligation))
+               ->additional(["message" => "Obligation"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function update(ObligationRequest $request, Organization $organization, Department $department, Job $job, Obligation $obligation)
@@ -47,10 +52,11 @@ class ObligationController extends Controller
         $this->authorize('update', [$obligation, $organization, $department, $job]);
 
         $obligation->fill($request->all())->save();
-        return response()->json([
-            "message" => "Obligation updated!!",
-            "data" => $obligation
-        ], 200);
+
+        return (ObligationResource::make($obligation))
+               ->additional(["message" => "Obligation updated!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function destroy(Organization $organization, Department $department, Job $job, Obligation $obligation)
