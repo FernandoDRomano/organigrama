@@ -17,16 +17,16 @@ class ObligationResource extends JsonResource
         return [
             "id" => $this->id,
             "description" => $this->description,
-            $this->mergeWhen(
-                ($this->whenLoaded('job')), [
-                    "relationship" => [
-                        "job" => [
-                            "id" => $this->job->id,
-                            "name" => $this->job->name
-                        ]
-                    ]
-                ]
-            ),
+            // $this->mergeWhen(
+            //     ($this->whenLoaded('job')), [
+            //         "relationship" => [
+            //             "job" => [
+            //                 "id" => $this->job->id,
+            //                 "name" => $this->job->name
+            //             ]
+            //         ]
+            //     ]
+            // ),
         ];
     }
 }

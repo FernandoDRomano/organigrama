@@ -8,6 +8,7 @@ use App\Models\Department;
 use App\Models\Obligation;
 use App\Models\Organization;
 use App\Http\Requests\V1\ObligationRequest;
+use App\Http\Resources\V1\ObligationCollection;
 use App\Http\Resources\V1\ObligationResource;
 
 class ObligationController extends Controller
@@ -19,7 +20,7 @@ class ObligationController extends Controller
 
         $obligations = $job->obligations()->orderBy('id', 'DESC')->paginate(10);
         
-        return (ObligationResource::collection($obligations))
+        return (ObligationCollection::make($obligations))
                ->additional(["message" => "Obligations all!!"])
                ->response()
                ->setStatusCode(200);
