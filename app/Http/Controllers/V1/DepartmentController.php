@@ -4,6 +4,8 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\DepartmentRequest;
+use App\Http\Resources\V1\DepartmentCollection;
+use App\Http\Resources\V1\DepartmentResource;
 use App\Models\Department;
 use App\Models\Organization;
 
@@ -13,9 +15,12 @@ class DepartmentController extends Controller
     public function index(Organization $organization){
         $this->authorize('viewAny', [Department::class, $organization]);
 
-        return response()->json([
-            "data" => $organization->departments
-        ], 200);
+        $departments = $organization->departments()->with('level', 'organization')->withCount(['jobs', 'departments'])->orderBy('id', 'DESC')->paginate(10);
+
+        return (DepartmentCollection::make($departments))
+               ->additional(["message" => "Departments all!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function store(Organization $organization, DepartmentRequest $request){
@@ -23,18 +28,23 @@ class DepartmentController extends Controller
 
         $department = Department::create($request->all());
 
-        return response()->json([
-            "message" => "Department created!!",
-            "data" => $department
-        ], 201);
+        $department->loadMissing(['jobs', 'departments'])->loadCount(['jobs', 'departments']);
+
+        return (DepartmentResource::make($department))
+               ->additional(["message" => "Department created!!"])
+               ->response()
+               ->setStatusCode(201);
     }
 
     public function show(Organization $organization, Department $department){
         $this->authorize('view', [$department, $organization]);
 
-        return response()->json([
-            "data" => $department
-        ], 200);
+        $department->loadMissing(['jobs', 'departments'])->loadCount(['jobs', 'departments']);
+
+        return (DepartmentResource::make($department))
+               ->additional(["message" => "Department"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function update(Organization $organization, Department $department, DepartmentRequest $request){
@@ -42,10 +52,12 @@ class DepartmentController extends Controller
 
         $department->fill($request->all())->save();
             
-        return response()->json([
-            "message" => "Department updated!!",
-            "data" => $department
-        ], 200);
+        $department->loadMissing(['jobs', 'departments'])->loadCount(['jobs', 'departments']);
+
+        return (DepartmentResource::make($department))
+               ->additional(["message" => "Department updated!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function destroy(Organization $organization, Department $department){

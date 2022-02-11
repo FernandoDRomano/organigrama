@@ -20,12 +20,11 @@ class JobCollection extends ResourceCollection
         ];
 
         if ($this->collection->isNotEmpty()) {
+            $job = $this->collection->first();
+            
             $relationship = [
-                "department" => [
-                    "id" => $this->collection->first()->department->id,
-                    "name" => $this->collection->first()->department->name
-                ],
-                "job_level" => JobLevelResource::make($this->collection->first()->level)
+                "department" => DepartmentResource::make($job->department),
+                "job_level" => JobLevelResource::make($job->level)
             ];
 
             $arr['relationship'] = $relationship;
