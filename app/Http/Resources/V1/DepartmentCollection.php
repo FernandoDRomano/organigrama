@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources\V1;
 
-use App\Http\Resources\DepartmentLevelResource;
+use App\Http\Resources\V1\DepartmentLevelResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 class DepartmentCollection extends ResourceCollection

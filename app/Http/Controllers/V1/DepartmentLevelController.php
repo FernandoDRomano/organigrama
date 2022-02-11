@@ -4,7 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\DepartmentLevelRequest;
-use App\Http\Resources\DepartmentLevelResource;
+use App\Http\Resources\V1\DepartmentLevelResource;
 use App\Models\DepartmentLevel;
 
 class DepartmentLevelController extends Controller
