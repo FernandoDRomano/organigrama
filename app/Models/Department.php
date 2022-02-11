@@ -23,6 +23,10 @@ class Department extends Model
         return $this->hasMany(Department::class, 'department_id');
     }
 
+    public function children(){
+        return $this->hasMany(Department::class, 'department_id')->with('departments');
+    }
+
     public function level(){
         return $this->belongsTo(DepartmentLevel::class, 'department_level_id');
     }

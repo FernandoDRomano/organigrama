@@ -1,15 +1,16 @@
 <?php
 
-use App\Http\Controllers\V1\AssignController;
-use App\Http\Controllers\V1\DepartmentController;
-use App\Http\Controllers\V1\DepartmentLevelController;
-use App\Http\Controllers\V1\EmployeController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\JobController;
+use App\Http\Controllers\V1\UserController;
+use App\Http\Controllers\V1\AssignController;
+use App\Http\Controllers\V1\EmployeController;
 use App\Http\Controllers\V1\JobLevelController;
+use App\Http\Controllers\V1\DepartmentController;
 use App\Http\Controllers\V1\ObligationController;
 use App\Http\Controllers\V1\OrganizationController;
-use App\Http\Controllers\V1\UserController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\V1\DepartmentLevelController;
+use App\Http\Controllers\V1\OrganizationChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,8 @@ Route::prefix('v1')->group(function(){
 
         Route::post('organizations/{organization}/assign', [AssignController::class, 'post']);
         Route::delete('organizations/{organization}/assign', [AssignController::class, 'destroy']);
+
+        Route::get('organizations/{organization}/organization-chart', OrganizationChartController::class);
     });
 
 });
