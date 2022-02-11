@@ -2,19 +2,20 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Models\Assign;
-use App\Models\Department;
 use App\Models\Employe;
+use App\Models\Department;
 use App\Models\Obligation;
+use App\Policies\JobPolicy;
 use App\Models\Organization;
 use App\Policies\AssignPolicy;
-use App\Policies\DepartmentPolicy;
 use App\Policies\EmployePolicy;
-use App\Policies\JobPolicy;
+use App\Policies\DepartmentPolicy;
 use App\Policies\ObligationPolicy;
 use App\Policies\OrganizationPolicy;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -42,6 +43,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('view-organization-chart', function (User $user, Organization $organization) {
+            return $user->id === $organization->user_id;
+        });
     }
 }
