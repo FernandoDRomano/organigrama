@@ -15,19 +15,22 @@ class JobCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return [
+        $arr = [
             "data" => $this->collection,
-            "relationship" => [
-                $this->mergeWhen(($this->collection->first()->department), [
-                    "department" => [
-                        "id" => $this->collection->first()->department->id,
-                        "name" => $this->collection->first()->department->name
-                    ]
-                ]),
-                $this->mergeWhen(($this->collection->first()->level), [
-                    "job_level" => JobLevelResource::make($this->collection->first()->level)
-                ]),
-            ],
         ];
+
+        if ($this->collection->isNotEmpty()) {
+            $relationship = [
+                "department" => [
+                    "id" => $this->collection->first()->department->id,
+                    "name" => $this->collection->first()->department->name
+                ],
+                "job_level" => JobLevelResource::make($this->collection->first()->level)
+            ];
+
+            $arr['relationship'] = $relationship;
+        }
+
+        return $arr;
     }
 }

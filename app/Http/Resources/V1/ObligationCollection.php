@@ -14,18 +14,18 @@ class ObligationCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return [
+        $arr = [
             "data" => $this->collection,
-            $this->mergeWhen(
-                ($this->collection->first()->job), [
-                    "relationship" => [
-                        "job" => [
-                            "id" => $this->collection->first()->job->id,
-                            "name" => $this->collection->first()->job->name
-                        ]
-                    ]
-                ]
-            ),
         ];
+
+        if ($this->collection->isNotEmpty()) {
+            $relationship = [
+                "job" => JobResource::make($this->collection->first()->job)
+            ];
+
+            $arr['relationship'] = $relationship;
+        }
+
+        return $arr;
     }
 }

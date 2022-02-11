@@ -18,8 +18,9 @@ class JobController extends Controller
         $this->authorize('viewAny', [Job::class, $organization, $department]);
 
         $jobs = $department->jobs()
-                ->with(['employes', 'obligations'])
+                ->with(['level', 'department'])
                 ->withCount(['employes', 'obligations'])
+                ->orderBy('id', 'DESC')
                 ->paginate(10);
 
         return (JobCollection::make($jobs))

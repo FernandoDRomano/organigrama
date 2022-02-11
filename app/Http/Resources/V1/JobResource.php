@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\V1;
 
+use App\Http\Resources\JobLevelResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobResource extends JsonResource
@@ -14,15 +15,22 @@ class JobResource extends JsonResource
      */
     public function toArray($request)
     {
+        $obligations = $this->whenLoaded('obligations');
+        
+        $obligations_count = $this->obligations_count;
+        $employes_count = $this->employes_count;
+
         return [
             "id" => $this->id,
             "name" => $this->name,
-            "obligations" => ObligationResource::collection($this->whenLoaded('obligations')),
+            "obligations" => ObligationResource::collection($obligations),
             // "employes" => EmployeResource::collection($this->whenLoaded('employes')),
-            "counts" => [
-                "obligations" => $this->when($this->obligations_count, $this->obligations_count, 0),
-                "employes" => $this->when($this->employes_count, $this->employes_count, 0)
-            ]
+            $this->mergeWhen( (isset($obligations_count) || isset($employes_count)), [
+                "counts" => [
+                    "obligations" => $obligations_count,
+                    "employes" => $employes_count
+                ]
+            ])
         ];
     }
 }

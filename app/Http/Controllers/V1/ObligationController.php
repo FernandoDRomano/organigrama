@@ -18,7 +18,7 @@ class ObligationController extends Controller
     {
         $this->authorize('viewAny', [Obligation::class, $organization, $department, $job]);
 
-        $obligations = $job->obligations()->orderBy('id', 'DESC')->paginate(10);
+        $obligations = $job->obligations()->with('job')->orderBy('id', 'DESC')->paginate(10);
         
         return (ObligationCollection::make($obligations))
                ->additional(["message" => "Obligations all!!"])
