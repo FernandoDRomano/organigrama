@@ -5,14 +5,22 @@ namespace App\Http\Controllers\V1;
 use App\Models\Organization;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\OrganizationRequest;
+use App\Http\Resources\V1\OrganizationCollection;
+use App\Http\Resources\V1\OrganizationResource;
 
 class OrganizationController extends Controller
 {
     
     public function index(){
-        return response()->json([
-            "data" => auth()->user()->organizations
-        ], 200);
+        $organizations = auth()->user()->organizations()
+                         ->with('user')->withCount(['departments', 'jobs', 'employes'])
+                         ->orderBy('id', 'DESC')
+                         ->paginate(10);
+
+        return (OrganizationCollection::make($organizations))
+               ->additional(["message" => "Organizations all!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function store(OrganizationRequest $request){
@@ -21,30 +29,36 @@ class OrganizationController extends Controller
             "user_id" => auth()->user()->id
         ]);
 
-        return response()->json([
-            "message" => "Organization created!!",
-            "data" => $organization
-        ], 201);
+        $organization->loadMissing(['departments', 'jobs', 'employes'])->loadCount(['departments', 'jobs', 'employes']);
+
+        return (OrganizationResource::make($organization))
+               ->additional(["message" => "Organization created!!"])
+               ->response()
+               ->setStatusCode(201);
     }
 
     public function show(Organization $organization){
         $this->authorize('view', $organization);
 
-        return response()->json([
-            "data" => $organization
-        ], 200);
+        $organization->loadMissing(['departments', 'jobs', 'employes'])->loadCount(['departments', 'jobs', 'employes']);
+
+        return (OrganizationResource::make($organization))
+               ->additional(["message" => "Organization"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function update(OrganizationRequest $request, Organization $organization){
         $this->authorize('update', $organization);
 
-        $organization->name = $request->name;
-        $organization->save();
+        $organization->fill($request->all())->save();
 
-        return response()->json([
-            "message" => "Organization updated!!",
-            "data" => $organization,
-        ], 200);
+        $organization->loadMissing(['departments', 'jobs', 'employes'])->loadCount(['departments', 'jobs', 'employes']);
+
+        return (OrganizationResource::make($organization))
+               ->additional(["message" => "Organization updated!!"])
+               ->response()
+               ->setStatusCode(200);
     }
 
     public function destroy(Organization $organization){
