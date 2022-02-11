@@ -16,6 +16,7 @@ class JobResource extends JsonResource
     public function toArray($request)
     {
         $obligations = $this->whenLoaded('obligations');
+        $employes = $this->whenLoaded('employes');
         
         $obligations_count = $this->obligations_count;
         $employes_count = $this->employes_count;
@@ -24,7 +25,7 @@ class JobResource extends JsonResource
             "id" => $this->id,
             "name" => $this->name,
             "obligations" => ObligationResource::collection($obligations),
-            // "employes" => EmployeResource::collection($this->whenLoaded('employes')),
+            "employes" => EmployeResource::collection($employes),
             $this->mergeWhen( (isset($obligations_count) || isset($employes_count)), [
                 "counts" => [
                     "obligations" => $obligations_count,

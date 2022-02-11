@@ -12,6 +12,15 @@ class Employe extends Model
     protected $fillable = ['first_name', 'last_name', 'dni', 'date_of_birth', 'address', 'organization_id'];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'date_of_birth' => 'date',
+    ];
+
+    /**
      * RELATIONS
      */
 
