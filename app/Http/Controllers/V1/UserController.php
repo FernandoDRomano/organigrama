@@ -23,7 +23,7 @@ class UserController extends Controller
     public function status(User $user){
         Gate::authorize('update-status-user');
 
-        $user->changeStatus();
+        $user->updateStatusAndTokens();
 
         $user->save();
         

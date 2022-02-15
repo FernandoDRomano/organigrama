@@ -11,6 +11,14 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    /*
+        CONSTANTES
+    */
+    const ROLE_ADMIN = "admin";
+    const ROLE_CUSTOMER = "customer";
+    const STATUS_ACTIVE = "active";
+    const STATUS_BLOCKED = "blocked";
+
     /**
      * The attributes that are mass assignable.
      *
@@ -32,10 +40,20 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function updateStatusAndTokens(){
+        $this->changeStatus();
+        $this->removeTokens();
+    }
+
     public function changeStatus() :void {
-        $this->status === 'active' 
-            ? $this->status = 'blocked' 
-            : $this->status = 'active';
+        $this->status === User::STATUS_ACTIVE 
+            ? $this->status = User::STATUS_BLOCKED 
+            : $this->status = User::STATUS_ACTIVE;
+    }
+
+    public function removeTokens(){
+        if($this->status === User::STATUS_BLOCKED)
+            $this->tokens()->delete();
     }
 
     public function organizations(){

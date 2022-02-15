@@ -31,7 +31,7 @@ class AuthUserController extends Controller
         
         if ($user && Hash::check($request->password, $user->password)) {
 
-            if($user->status === 'active'){
+            if($user->status === User::STATUS_ACTIVE){
                 $token = $user->createToken("auth_token")->plainTextToken;
 
                 return (UserResource::make($user))

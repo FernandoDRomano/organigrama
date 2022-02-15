@@ -50,7 +50,7 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('update-status-user', function (User $user) {
-            return  $user->role === 'admin';
+            return  $user->role === User::ROLE_ADMIN;
         });
     }
 }
