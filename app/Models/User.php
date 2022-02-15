@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -30,6 +31,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function changeStatus() :void {
+        $this->status === 'active' 
+            ? $this->status = 'blocked' 
+            : $this->status = 'active';
+    }
 
     public function organizations(){
         return $this->hasMany(Organization::class);

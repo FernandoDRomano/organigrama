@@ -14,11 +14,21 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $organizations_count = $this->organizations_count;
+        $organizations = $this->whenLoaded('organizations');
+
         return [
             "id" => $this->id,
             "name" => $this->name,
             "email" => $this->email,
-            "organizations" => OrganizationResource::collection($this->whenLoaded('organizations'))
+            "status" => $this->status,
+            "role" => $this->role,
+            "organizations" => OrganizationResource::collection($organizations),
+            $this->mergeWhen( (isset($organizations_count) ), [
+                "counts" => [
+                    "organizations" => $organizations_count,
+                ]
+            ])
         ];
     }
 }

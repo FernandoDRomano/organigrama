@@ -39,8 +39,9 @@ class DatabaseSeeder extends Seeder
             Organization::factory()
             ->has(Employe::factory()->count(10))
             ->count(5))
-        ->create(["name" => "Fernando D. Romano",
-                 "email" => "fer@gmail.com", 
+        ->create(["name" => "Fernando Daniel Romano",
+                 "email" => "admin@gmail.com", 
+                 "role" => "admin",
                  "password" => "$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi"]);
 
         User::factory(3)

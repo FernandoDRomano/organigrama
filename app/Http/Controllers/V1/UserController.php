@@ -2,62 +2,66 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\LoginRequest;
-use App\Http\Requests\V1\UserRequest;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\UserCollection;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\V1\UserResource;
 
 class UserController extends Controller
 {
     
-    public function register(UserRequest $request){
-        
-        $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        return response()->json([
-            "data" => $user,
-            "message" => "User created!!!"
-        ], 201);
-
-    }
-
-    public function login(LoginRequest $request){
-
-        $user = User::where('email', '=', $request->email)->first();
-        
-        if ($user && Hash::check($request->password, $user->password)) {
-            
-            $token = $user->createToken("auth_token")->plainTextToken;
-
-            return response()->json([
-                "data" => $user,
-                "access_token" => $token
-            ], 200);
-
-        }
-
-        return response()->json([
-            "message" => "Error: your credentials are incorrects"
-        ], 401);
-        
-    }
-
     public function profile(){
-        return response()->json([
-            "data" => auth()->user()
-        ]);
+        $user = User::withCount('organizations')->findOrFail(auth()->id());
+
+        return (UserResource::make($user))
+               ->additional(["message" => "User profile"])
+               ->response()
+               ->setStatusCode(200);
     }
 
-    public function logout(){
-        auth()->user()->tokens()->delete();
+    public function status(User $user){
+        Gate::authorize('update-status-user');
+
+        $user->changeStatus();
+
+        $user->save();
+        
+        return (UserResource::make($user))
+               ->additional(["message" => "User status updated!!"])
+               ->response()
+               ->setStatusCode(200);
+    }
+
+    public function index(){
+        $this->authorize('viewAny', User::class);
+        
+        $users = User::withCount('organizations')->orderBy('id', 'DESC')->paginate(10);
+        return (UserCollection::make($users))
+               ->additional(["message" => "Users all!!"])
+               ->response()
+               ->setStatusCode(200);
+    }
+
+    public function show(User $user){
+        $this->authorize('view', $user);
+        
+        $user->loadMissing('organizations')->loadCount('organizations');
+
+        return (UserResource::make($user))
+               ->additional(["message" => "User"])
+               ->response()
+               ->setStatusCode(200);
+    }
+
+    public function destroy(User $user){
+        $this->authorize('delete', $user);
+        
+        $user->delete();
+
         return response()->json([
-            "message" => "User logout"
-        ]);
+            "message" => "User delete!!"
+        ], 204);
     }
 
 }

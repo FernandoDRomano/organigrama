@@ -14,6 +14,7 @@ use App\Policies\EmployePolicy;
 use App\Policies\DepartmentPolicy;
 use App\Policies\ObligationPolicy;
 use App\Policies\OrganizationPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -31,7 +32,8 @@ class AuthServiceProvider extends ServiceProvider
         Department::class => DepartmentPolicy::class,
         Job::class => JobPolicy::class,
         Obligation::class => ObligationPolicy::class,
-        Assign::class => AssignPolicy::class
+        Assign::class => AssignPolicy::class,
+        User::class => UserPolicy::class
     ];
 
     /**
@@ -45,6 +47,10 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('view-organization-chart', function (User $user, Organization $organization) {
             return $user->id === $organization->user_id;
+        });
+
+        Gate::define('update-status-user', function (User $user) {
+            return  $user->role === 'admin';
         });
     }
 }

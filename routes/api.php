@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\JobController;
-use App\Http\Controllers\V1\UserController;
+use App\Http\Controllers\V1\AuthUserController;
 use App\Http\Controllers\V1\AssignController;
 use App\Http\Controllers\V1\EmployeController;
 use App\Http\Controllers\V1\JobLevelController;
@@ -11,6 +11,7 @@ use App\Http\Controllers\V1\ObligationController;
 use App\Http\Controllers\V1\OrganizationController;
 use App\Http\Controllers\V1\DepartmentLevelController;
 use App\Http\Controllers\V1\OrganizationChartController;
+use App\Http\Controllers\V1\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,13 +26,15 @@ use App\Http\Controllers\V1\OrganizationChartController;
 
 Route::prefix('v1')->group(function(){
 
-    Route::post('register', [UserController::class, 'register'])->name('register');
-    Route::post('login', [UserController::class, 'login'])->name('login');
+    Route::post('register', [AuthUserController::class, 'register'])->name('register');
+    Route::post('login', [AuthUserController::class, 'login'])->name('login');
 
     Route::middleware(['auth:sanctum'])->group(function(){
-
-        Route::get('user-profile', [UserController::class, 'profile'])->name('profile');
-        Route::post('logout', [UserController::class, 'logout'])->name('logout');
+        Route::post('logout', [AuthUserController::class, 'logout'])->name('logout');
+        
+        Route::get('user-profile', [UserController::class, 'profile'])->name('users.profile');
+        Route::put('user-status/{user}', [UserController::class, 'status'])->name('users.status');
+        Route::apiResource('users', UserController::class)->only(['index', 'show', 'destroy']);
 
         Route::apiResource('organizations', OrganizationController::class);
 
