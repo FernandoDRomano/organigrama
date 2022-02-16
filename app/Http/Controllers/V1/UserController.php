@@ -20,7 +20,7 @@ class UserController extends Controller
                ->setStatusCode(200);
     }
 
-    public function status(User $user){
+    public function status(User $user){ 
         Gate::authorize('update-status-user');
 
         $user->updateStatusAndTokens();
