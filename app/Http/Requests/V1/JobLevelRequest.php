@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class JobLevelRequest extends FormRequest
@@ -23,9 +24,16 @@ class JobLevelRequest extends FormRequest
      */
     public function rules()
     {
+        $job_level = $this->route()->parameter('job_level');
         return [
-            "name" => "required|min:3",
-            "hierarchy" => "required"
+            "name" => "required|min:2|max:20",
+            "hierarchy" => [
+                "required",
+                "integer",
+                "min:1",
+                "max:10",
+                Rule::unique('job_levels')->ignore($job_level),
+            ]
         ];
     }
 }

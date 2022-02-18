@@ -17,7 +17,7 @@ class JobLevelFactory extends Factory
     {
         return [
             "name" => $this->faker->numerify('Level - #'),
-            "hierarchy" => $this->faker->randomDigitNot(0)
+            "hierarchy" => $this->faker->numberBetween(1, 10)
         ];
     }
 }

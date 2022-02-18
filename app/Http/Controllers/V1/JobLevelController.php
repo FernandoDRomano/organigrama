@@ -11,7 +11,9 @@ class JobLevelController extends Controller
 {
     
     public function index(){
-        $jobLevels = JobLevel::paginate(10);
+        $this->authorize('viewAny', JobLevel::class);
+
+        $jobLevels = JobLevel::orderBy("hierarchy")->paginate(10);
 
         return (JobLevelResource::collection($jobLevels))
                ->additional(["message" => "Job levels all!!"])
@@ -20,6 +22,8 @@ class JobLevelController extends Controller
     }
 
     public function store(JobLevelRequest $request){
+        $this->authorize('create', JobLevel::class);
+
         $jobLevel = JobLevel::create($request->all());
 
         return (JobLevelResource::make($jobLevel))
@@ -29,6 +33,8 @@ class JobLevelController extends Controller
     }
 
     public function show(JobLevel $jobLevel){
+        $this->authorize('view', $jobLevel);
+
         return (JobLevelResource::make($jobLevel))
                ->additional(["message" => "Job level!!"])
                ->response()
@@ -36,6 +42,8 @@ class JobLevelController extends Controller
     }
 
     public function update(JobLevel $jobLevel, JobLevelRequest $request){
+        $this->authorize('update', $jobLevel);
+
         $jobLevel->fill($request->all())->save();
 
         return (JobLevelResource::make($jobLevel))
@@ -45,6 +53,8 @@ class JobLevelController extends Controller
     }
 
     public function destroy(JobLevel $jobLevel){
+        $this->authorize('delete', $jobLevel);
+
         $jobLevel->delete();
 
         return response()->json([
