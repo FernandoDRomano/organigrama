@@ -119,7 +119,7 @@ class OrganizationControllerTest extends TestCase
         return [
             "The field name is required" => [ [ "name" => "" ], "name" ],
             "The field name must be at least 3 characters" => [ ["name" => Str::random(2)], "name" ],
-            "The field name must not be greater than 25 characters" => [ ["name" => Str::random(26)], "name" ]
+            "The field name must not be greater than 40 characters" => [ ["name" => Str::random(26)], "name" ]
         ];
     }
 

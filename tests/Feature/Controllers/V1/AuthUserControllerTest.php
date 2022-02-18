@@ -58,7 +58,7 @@ class AuthUserControllerTest extends TestCase
             "The field email has already been taken" => [ ["email" => "admin@gmail.com"], "email" ],
             "The field password is required" => [ ["password" => ""], "password" ],
             "The field password must be at least 6 characters" => [ ["password" => Str::random(5)], "password" ],
-            "The field password must not be greater than 16 characters" => [ ["password" => Str::random(17)], "password" ],
+            "The field password must not be greater than 70 characters" => [ ["password" => Str::random(17)], "password" ],
             "The field password confirmation does not match" => [ ["password" => "12345678", "password_confirmation" => "1234567890"], "password" ]
         ];
     }

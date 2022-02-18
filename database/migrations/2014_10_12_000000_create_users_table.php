@@ -17,7 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->string('name', 40);
             $table->string('email')->unique();
-            $table->string('password', 16);
+            $table->string('password', 70);
             $table->enum('role', ['admin', 'customer'])->default('customer');
             $table->enum('status', ['active', 'blocked'])->default('active');
             $table->timestamps();
