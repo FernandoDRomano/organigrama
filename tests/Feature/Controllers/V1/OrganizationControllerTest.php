@@ -106,20 +106,30 @@ class OrganizationControllerTest extends TestCase
      * @test
      * @dataProvider invalidDataForCreateOrganization
      */
-    public function authenticated_users_cannot_create_organizations_with_invalid_data($invalidData, $invalidField) :void
+    public function authenticated_users_cannot_create_organizations_with_invalid_data($method, $route, $invalidData, $invalidField, $param) :void
     {
         $this->getUserAuthenticated();
-        $response = $this->postJson( route('organizations.store') , $invalidData);
+        Organization::factory()->create();
+
+        $response = $this->$method( route($route, $param) , $invalidData);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors($invalidField);
     }
 
     public function invalidDataForCreateOrganization() :array{
+        $store = "organizations.store";
+        $update = "organizations.update";
+        $post = "postJson";
+        $put = "putJson";
+        
         return [
-            "The field name is required" => [ [ "name" => "" ], "name" ],
-            "The field name must be at least 3 characters" => [ ["name" => Str::random(2)], "name" ],
-            "The field name must not be greater than 40 characters" => [ ["name" => Str::random(41)], "name" ]
+            "The field name is required" => [$post, $store, [ "name" => "" ], "name", null],
+            "The field name is required" => [$put, $update, [ "name" => "" ], "name", "1"],
+            "The field name must be at least 3 characters" => [$post, $store, ["name" => Str::random(2)], "name", null],
+            "The field name must be at least 3 characters" => [$put, $update, ["name" => Str::random(2)], "name", "1"],
+            "The field name must not be greater than 40 characters" => [$post, $store, ["name" => Str::random(41)], "name", null],
+            "The field name must not be greater than 40 characters" => [$put, $update, ["name" => Str::random(41)], "name", "1"]
         ];
     }
 
