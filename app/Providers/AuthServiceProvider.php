@@ -6,11 +6,13 @@ use App\Models\User;
 use App\Models\Assign;
 use App\Models\Employe;
 use App\Models\Department;
+use App\Models\DepartmentLevel;
 use App\Models\JobLevel;
 use App\Models\Obligation;
 use App\Policies\JobPolicy;
 use App\Models\Organization;
 use App\Policies\AssignPolicy;
+use App\Policies\DepartmentLevelPolicy;
 use App\Policies\EmployePolicy;
 use App\Policies\DepartmentPolicy;
 use App\Policies\JobLevelPolicy;
@@ -36,7 +38,8 @@ class AuthServiceProvider extends ServiceProvider
         Obligation::class => ObligationPolicy::class,
         Assign::class => AssignPolicy::class,
         User::class => UserPolicy::class,
-        JobLevel::class => JobLevelPolicy::class
+        JobLevel::class => JobLevelPolicy::class,
+        DepartmentLevel::class => DepartmentLevelPolicy::class
     ];
 
     /**

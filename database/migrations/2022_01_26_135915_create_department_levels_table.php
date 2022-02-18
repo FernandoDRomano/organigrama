@@ -15,8 +15,8 @@ class CreateDepartmentLevelsTable extends Migration
     {
         Schema::create('department_levels', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('hierarchy');
+            $table->string('name', 20);
+            $table->integer('hierarchy');
             $table->timestamps();
         });
     }

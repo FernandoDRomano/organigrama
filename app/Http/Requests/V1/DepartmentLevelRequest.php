@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DepartmentLevelRequest extends FormRequest
@@ -23,9 +24,16 @@ class DepartmentLevelRequest extends FormRequest
      */
     public function rules()
     {
+        $department_level = $this->route()->parameter('department_level');
         return [
-            "name" => "required|min:3",
-            "hierarchy" => "required"
+            "name" => "required|min:2|max:20",
+            "hierarchy" => [
+                "required",
+                "integer",
+                "min:1",
+                "max:10",
+                Rule::unique('department_levels')->ignore($department_level),
+            ]
         ];
     }
 }

@@ -11,7 +11,9 @@ class DepartmentLevelController extends Controller
 {
 
     public function index(){
-        $departmentLevels = DepartmentLevel::paginate(10);
+        $this->authorize('viewAny', DepartmentLevel::class);
+
+        $departmentLevels = DepartmentLevel::orderBy("hierarchy")->paginate(10);
 
         return (DepartmentLevelResource::collection($departmentLevels))
                ->additional(["message" => "Department levels all!!"])
@@ -20,6 +22,8 @@ class DepartmentLevelController extends Controller
     }
 
     public function store(DepartmentLevelRequest $request){
+        $this->authorize('create', DepartmentLevel::class);
+
         $departmentLevel = DepartmentLevel::create($request->all());
 
         return (DepartmentLevelResource::make($departmentLevel))
@@ -29,6 +33,8 @@ class DepartmentLevelController extends Controller
     }
 
     public function show(DepartmentLevel $departmentLevel){
+        $this->authorize('view', $departmentLevel);
+
         return (DepartmentLevelResource::make($departmentLevel))
                ->additional(["message" => "Department level!!"])
                ->response()
@@ -36,6 +42,8 @@ class DepartmentLevelController extends Controller
     }
 
     public function update(DepartmentLevel $departmentLevel, DepartmentLevelRequest $request){
+        $this->authorize('update', $departmentLevel);
+
         $departmentLevel->fill($request->all())->save();
     
         return (DepartmentLevelResource::make($departmentLevel))
@@ -45,6 +53,8 @@ class DepartmentLevelController extends Controller
     }
 
     public function destroy(DepartmentLevel $departmentLevel){
+        $this->authorize('delete', $departmentLevel);
+
         $departmentLevel->delete();
 
         return response()->json([
