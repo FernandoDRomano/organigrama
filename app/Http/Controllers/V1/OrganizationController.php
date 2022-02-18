@@ -29,7 +29,7 @@ class OrganizationController extends Controller
             "user_id" => auth()->user()->id
         ]);
 
-        $organization->loadMissing(['departments', 'jobs', 'employes'])->loadCount(['departments', 'jobs', 'employes']);
+        $organization->loadCount(['departments', 'jobs', 'employes']);
 
         return (OrganizationResource::make($organization))
                ->additional(["message" => "Organization created!!"])
@@ -53,7 +53,7 @@ class OrganizationController extends Controller
 
         $organization->fill($request->all())->save();
 
-        $organization->loadMissing(['departments', 'jobs', 'employes'])->loadCount(['departments', 'jobs', 'employes']);
+        $organization->loadCount(['departments', 'jobs', 'employes']);
 
         return (OrganizationResource::make($organization))
                ->additional(["message" => "Organization updated!!"])

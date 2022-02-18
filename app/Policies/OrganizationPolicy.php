@@ -21,7 +21,7 @@ class OrganizationPolicy
      */
     public function view(User $user, Organization $organization)
     {
-        return $user->id === $organization->user_id;
+        return $user->id == $organization->user_id;
     }
 
     /**
@@ -32,8 +32,8 @@ class OrganizationPolicy
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Organization $organization)
-    {
-        return $user->id === $organization->user_id;
+    {   
+        return $user->id == $organization->user_id;
     }
 
     /**
@@ -45,7 +45,7 @@ class OrganizationPolicy
      */
     public function delete(User $user, Organization $organization)
     {
-        return $user->id === $organization->user_id;
+        return $user->id == $organization->user_id;
     }
 
 }

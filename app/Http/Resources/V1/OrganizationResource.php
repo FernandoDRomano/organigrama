@@ -25,11 +25,6 @@ class OrganizationResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
-            // "organigrama" => DepartmentResource::collection($this->whenLoaded('children')),
-            "organigrama" => $this->whenLoaded('children'),
-            "departments" => DepartmentResource::collection($departments),
-            "jobs" => JobResource::collection($jobs),
-            "employes" => EmployeResource::collection($employes),
             $this->mergeWhen( ( isset($departments_count) || isset($jobs_count) || isset($employes_count) ), [
                 "counts" => [
                     "departments" => $departments_count,
