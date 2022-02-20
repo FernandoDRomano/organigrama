@@ -15,11 +15,11 @@ class CreateEmployesTable extends Migration
     {
         Schema::create('employes', function (Blueprint $table) {
             $table->id();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('dni');
+            $table->string('first_name', 40);
+            $table->string('last_name', 25);
+            $table->string('dni', 8);
             $table->date('date_of_birth');
-            $table->string('address');
+            $table->string('address', 70);
             $table->foreignId('organization_id')->constrained('organizations')->onDelete('cascade');
             $table->timestamps();
         });

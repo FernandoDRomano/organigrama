@@ -16,7 +16,7 @@ class EmployeController extends Controller
     {
         $this->authorize('viewAny', [Employe::class, $organization]);
 
-        $employes = $organization->employes()->with('organization')->orderBy('id', 'DESC')->paginate(10);
+        $employes = $organization->employes()->with('organization')->withCount('jobs')->orderBy('id', 'DESC')->paginate(10);
 
         return (EmployeCollection::make($employes))
                ->additional(["message" => "Employes all!!"])
@@ -30,7 +30,7 @@ class EmployeController extends Controller
 
         $employe = Employe::create($request->all());
 
-        $employe->loadMissing('jobs')->loadCount('jobs');
+        $employe->loadCount('jobs');
 
         return (EmployeResource::make($employe))
                ->additional(['message' => "Employe created!!"])
@@ -56,7 +56,7 @@ class EmployeController extends Controller
          
         $employe->fill($request->all())->save();
            
-        $employe->loadMissing('jobs')->loadCount('jobs');
+        $employe->loadCount('jobs');
 
         return (EmployeResource::make($employe))
                ->additional(['message' => "Employe updated!!"])

@@ -27,11 +27,11 @@ class EmployeRequest extends FormRequest
         $organization = $this->route()->parameter('organization');
 
         return [
-            "first_name" => "required|min:2",
-            "last_name" => "required|min:2",
-            "dni" => "required|max:9|digits_between:7,8",
-            "date_of_birth" => "required|date",
-            "address" => "required|min:3|max:256",
+            "first_name" => "required|min:2|max:40",
+            "last_name" => "required|min:2|max:25",
+            "dni" => "required|digits_between:7,8",
+            "date_of_birth" => "required|date|date_format:Y/m/d",
+            "address" => "required|min:3|max:70",
             "organization_id" => [
                 "bail",
                 "required", 
