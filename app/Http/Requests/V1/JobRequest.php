@@ -31,7 +31,7 @@ class JobRequest extends FormRequest
         $job = $this->route()->parameter('job');
 
         return [
-            "name" => "bail|required|min:2",
+            "name" => "bail|required|min:2|max:30",
             "department_id" => [
                 "bail",
                 "required",

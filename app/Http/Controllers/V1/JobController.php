@@ -35,7 +35,7 @@ class JobController extends Controller
 
         $job = Job::create($request->all());
 
-        return (JobResource::make($job->loadMissing(['employes', 'obligations'])->loadCount(['employes', 'obligations'])))
+        return (JobResource::make($job->loadCount(['employes', 'obligations'])))
                ->additional(["message" => "Job created!!"])
                ->response()
                ->setStatusCode(201);
@@ -45,7 +45,7 @@ class JobController extends Controller
     {
         $this->authorize('view', [$job, $organization, $department]);
 
-        return (JobResource::make($job->loadMissing(['employes', 'obligations'])->loadCount(['employes', 'obligations'])))
+        return (JobResource::make($job->loadMissing(['employes', 'obligations', 'level'])->loadCount(['employes', 'obligations'])))
                ->additional(["message" => "Job!!"])
                ->response()
                ->setStatusCode(200);
@@ -57,7 +57,7 @@ class JobController extends Controller
 
         $job->fill($request->all())->save();
         
-        return (JobResource::make($job->loadMissing(['employes', 'obligations'])->loadCount(['employes', 'obligations'])))
+        return (JobResource::make($job->loadCount(['employes', 'obligations'])))
                ->additional(["message" => "Job updated!!"])
                ->response()
                ->setStatusCode(200);

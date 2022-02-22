@@ -14,43 +14,43 @@ class JobPolicy
 
     public function viewAny(User $user, Organization $organization, Department $department)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id;
+               $organization->id == $department->organization_id;
     }
 
     public function view(User $user, Job $job, Organization $organization, Department $department)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id
+               $organization->id == $department->organization_id
                &&
-               $department->id === $job->department_id;
+               $department->id == $job->department_id;
     }
 
     public function create(User $user, Organization $organization, Department $department)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id;
+               $organization->id == $department->organization_id;
     }
 
     public function update(User $user, Job $job, Organization $organization, Department $department)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id
+               $organization->id == $department->organization_id
                &&
-               $department->id === $job->department_id;
+               $department->id == $job->department_id;
     }
 
     public function delete(User $user, Job $job, Organization $organization, Department $department)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id
+               $organization->id == $department->organization_id
                &&
-               $department->id === $job->department_id;
+               $department->id == $job->department_id;
     }
 
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\V1;
 
-use App\Http\Resources\JobLevelResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class JobResource extends JsonResource
@@ -17,6 +16,7 @@ class JobResource extends JsonResource
     {
         $obligations = $this->whenLoaded('obligations');
         $employes = $this->whenLoaded('employes');
+        $level = $this->whenLoaded('level');
         
         $obligations_count = $this->obligations_count;
         $employes_count = $this->employes_count;
@@ -24,6 +24,7 @@ class JobResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
+            "level" => JobLevelResource::make($level),
             "obligations" => ObligationResource::collection($obligations),
             "employes" => EmployeResource::collection($employes),
             $this->mergeWhen( (isset($obligations_count) || isset($employes_count)), [

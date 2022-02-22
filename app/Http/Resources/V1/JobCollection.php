@@ -24,7 +24,6 @@ class JobCollection extends ResourceCollection
             
             $relationship = [
                 "department" => DepartmentResource::make($job->department),
-                "job_level" => JobLevelResource::make($job->level)
             ];
 
             $arr['relationship'] = $relationship;
