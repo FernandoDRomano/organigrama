@@ -13,33 +13,33 @@ class DepartmentPolicy
 
     public function viewAny(User $user, Organization $organization)
     {
-        return $user->id === $organization->user_id;
+        return $user->id == $organization->user_id;
     }
 
     public function view(User $user, Department $department, Organization $organization)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id;
+               $organization->id == $department->organization_id;
     }
 
     public function create(User $user, Organization $organization)
     {
-        return $user->id === $organization->user_id;
+        return $user->id == $organization->user_id;
     }
 
     public function update(User $user, Department $department, Organization $organization)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id;
+               $organization->id == $department->organization_id;
     }
 
     public function delete(User $user, Department $department, Organization $organization)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id;
+               $organization->id == $department->organization_id;
     }
 
 }

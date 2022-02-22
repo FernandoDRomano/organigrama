@@ -3,17 +3,19 @@
 namespace App\Http\Requests\V1;
 
 use App\Models\DepartmentLevel;
+use App\Rules\CanBeUpdatedIfHaveNotChildren;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Rules\ExitsDepartmentInOrganization;
 use App\Rules\OnlyApartmentOnTheFirstLevel;
 use App\Rules\OrganizationContainsValidId;
 use App\Rules\SelectedDepartmentIfLevelIsGreaterThanOne;
+use Illuminate\Validation\Rule;
 
 class DepartmentRequest extends FormRequest
 {
 
     protected $organization;
-    protected $hierarchy;
+    protected $department;
 
     /**
      * Determine if the user is authorized to make this request.
@@ -32,27 +34,16 @@ class DepartmentRequest extends FormRequest
      */
     protected $stopOnFirstFailure = true;
 
-    public function initValues(){
-        $this->organization = $this->route()->parameter('organization');
-
-        if ($this->department_level_id) {
-            $aux = DepartmentLevel::where('id', $this->department_level_id)->first();
-            if($aux){
-                $this->hierarchy = $aux->hierarchy;
-            }
-        }
-    }
-
     /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
-    public function rules()
+    public function rules() :array
     {
         $this->initValues();
         return [
-            "name" => "required|min:3",
+            "name" => "required|min:3|max:30",
             "organization_id" => [
                 "bail",
                 "required",
@@ -63,13 +54,12 @@ class DepartmentRequest extends FormRequest
                 "bail",
                 "required",
                 "exists:department_levels,id",
-                new OnlyApartmentOnTheFirstLevel
+                new OnlyApartmentOnTheFirstLevel($this->department),
+                new CanBeUpdatedIfHaveNotChildren($this->department)
             ],
-            //ASIGNO EL VALOR  DE hierarchy A department_level_id PORQUE NO LO TOMA COMO VARIABLE {$this->hierarchy}
-            $this->department_level_id = $this->hierarchy,
             "department_id" => [
                 "bail",
-                "required_unless:department_level_id,!=,1",
+                Rule::requiredIf( $this->hierarchyMoreThanOne() ),
                 "nullable",
                 new ExitsDepartmentInOrganization($this->organization),
                 new SelectedDepartmentIfLevelIsGreaterThanOne
@@ -77,12 +67,31 @@ class DepartmentRequest extends FormRequest
         ];
     }
 
-    public function messages()
+    public function messages() :array
     {
         return [
-            "department_id.required_unless" => "The :attribute is required because hierarchy is greater than one"
+            "department_id.required_if" => "The :attribute is required because hierarchy is greater than one"
         ];
     }
 
+    public function initValues() :void
+    {
+        $this->organization = $this->route()->parameter('organization');
+
+        if($this->route()->parameter('department')){
+            $this->department = $this->route()->parameter('department');
+        }
+    }
+
+    public function hierarchyMoreThanOne() :bool
+    {
+        if ($this->department_level_id) {
+            $level = DepartmentLevel::where('id', $this->department_level_id)->first();
+            
+            return ($level && $level->hierarchy > 1);
+        }
+
+        return true;
+    }
 
 }

@@ -19,9 +19,12 @@ class DepartmentFactory extends Factory
     {
         return [
             "name" => $this->faker->numerify('Department-##'),
-            "organization_id" => $this->faker->numberBetween(1, 9),
-            "department_level_id" => $this->faker->numberBetween(1, 5),
-            "department_id" => $this->faker->numberBetween(1, 10)
+            // "organization_id" => $this->faker->numberBetween(1, 9),
+            // "department_level_id" => $this->faker->numberBetween(1, 5),
+            // "department_id" => $this->faker->numberBetween(1, 10)
+            "organization_id" => Organization::factory(),
+            "department_level_id" => DepartmentLevel::factory(),
+            "department_id" => null
         ];
     }
 }

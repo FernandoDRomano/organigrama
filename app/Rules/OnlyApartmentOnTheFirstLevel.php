@@ -2,24 +2,28 @@
 
 namespace App\Rules;
 
+use App\Models\Department;
 use App\Models\DepartmentLevel;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\DataAwareRule;
 
+use function PHPUnit\Framework\isNull;
 
 class OnlyApartmentOnTheFirstLevel implements Rule, DataAwareRule
 {
+    private $department;
+
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Department $department = null)
     {
-        //
+        $this->department = $department;
     }
 
-    /**
+    /*
      * All of the data under validation.
      *
      * @var array
@@ -39,9 +43,19 @@ class OnlyApartmentOnTheFirstLevel implements Rule, DataAwareRule
         
         if($level->hierarchy == '1'){
             
-            $count = $level->departments->where('organization_id', '=', $this->data['organization_id'])->count();
-            
-            if ($count > 0) {
+            $departments = collect( $level->departments()->where('organization_id', '=', $this->data['organization_id'])->get() );
+
+            if($departments->count() > 0){
+
+                if(isset($this->department)){
+                    
+                    if(isset($this->department) && $departments->contains($this->department)){
+                        
+                        return true;
+                    }
+
+                }
+
                 return false;
             }
 

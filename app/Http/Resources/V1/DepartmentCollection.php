@@ -27,7 +27,6 @@ class DepartmentCollection extends ResourceCollection
                     "id" => $department->organization->id,
                     "name" => $department->organization->name,
                 ],
-                "department_level" => DepartmentLevelResource::make($department->level)
             ];
 
             $arr["relationships"] = $relationships;

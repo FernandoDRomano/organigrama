@@ -43,10 +43,6 @@ class SelectedDepartmentIfLevelIsGreaterThanOne implements Rule, DataAwareRule
             return true;
         }
 
-        // if (isNull($value)) {
-        //     return false;
-        // }
-
         $levelNumber = intval($level->hierarchy) - 1;
         $departmentLevel = DepartmentLevel::where('hierarchy', $levelNumber )->first();
 

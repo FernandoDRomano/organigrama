@@ -3,6 +3,7 @@
 namespace App\Http\Resources\V1;
 
 use App\Models\Department;
+use App\Models\DepartmentLevel;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class DepartmentResource extends JsonResource
@@ -17,6 +18,7 @@ class DepartmentResource extends JsonResource
     {
         $jobs = $this->whenLoaded('jobs');
         $departments = $this->whenLoaded('departments');
+        $level = $this->whenLoaded('level');
 
         $jobs_count = $this->jobs_count;
         $departments_count = $this->departments_count;
@@ -24,6 +26,7 @@ class DepartmentResource extends JsonResource
         return [
             "id" => $this->id,
             "name" => $this->name,
+            "level" => DepartmentLevelResource::make($level),
             "jobs" => JobResource::collection($jobs),
             "departments_children" => DepartmentResource::collection($departments),
             $this->mergeWhen( ( isset($jobs_count) ) ,[

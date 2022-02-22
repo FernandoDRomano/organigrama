@@ -15,7 +15,7 @@ class DepartmentController extends Controller
     public function index(Organization $organization){
         $this->authorize('viewAny', [Department::class, $organization]);
 
-        $departments = $organization->departments()->with('level', 'organization')->withCount(['jobs', 'departments'])->orderBy('id', 'DESC')->paginate(10);
+        $departments = $organization->departments()->with('organization', 'level')->withCount(['jobs', 'departments'])->orderBy('id', 'DESC')->paginate(10);
 
         return (DepartmentCollection::make($departments))
                ->additional(["message" => "Departments all!!"])
@@ -28,7 +28,7 @@ class DepartmentController extends Controller
 
         $department = Department::create($request->all());
 
-        $department->loadMissing(['jobs', 'departments'])->loadCount(['jobs', 'departments']);
+        $department->loadCount(['jobs', 'departments']);
 
         return (DepartmentResource::make($department))
                ->additional(["message" => "Department created!!"])
@@ -39,7 +39,7 @@ class DepartmentController extends Controller
     public function show(Organization $organization, Department $department){
         $this->authorize('view', [$department, $organization]);
 
-        $department->loadMissing(['jobs', 'departments'])->loadCount(['jobs', 'departments']);
+        $department->loadMissing(['jobs', 'departments', 'level'])->loadCount(['jobs', 'departments']);
 
         return (DepartmentResource::make($department))
                ->additional(["message" => "Department"])
@@ -52,7 +52,7 @@ class DepartmentController extends Controller
 
         $department->fill($request->all())->save();
             
-        $department->loadMissing(['jobs', 'departments'])->loadCount(['jobs', 'departments']);
+        $department->loadCount(['jobs', 'departments']);
 
         return (DepartmentResource::make($department))
                ->additional(["message" => "Department updated!!"])

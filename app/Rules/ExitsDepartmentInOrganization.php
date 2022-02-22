@@ -37,13 +37,6 @@ class ExitsDepartmentInOrganization implements Rule, DataAwareRule
      */
     public function passes($attribute, $value)
     {
-        // if (isNull($value)) {
-        //     return true;
-        // }
-        
-        // $collect = collect(Organization::findOrFail($this->data['organization_id'])->departments);
-        // $collect = collect(Organization::findOrFail($this->organization)->departments);
-
         $collect = collect($this->organization->departments);
 
         if ($collect->contains('id', $value)) {
