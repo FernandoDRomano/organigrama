@@ -42,7 +42,7 @@ class ObligationController extends Controller
     {
         $this->authorize('view', [$obligation, $organization, $department, $job]);
 
-        return (ObligationResource::make($obligation))
+        return (ObligationResource::make($obligation->loadMissing('job')))
                ->additional(["message" => "Obligation"])
                ->response()
                ->setStatusCode(200);

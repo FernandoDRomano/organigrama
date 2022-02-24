@@ -29,7 +29,7 @@ class ValidateJobInDepartmentInOrganization implements Rule
      */
     public function passes($attribute, $value)
     {        
-        if ($this->organization->id === $this->department->organization_id && $this->department->id === $this->job->department_id) {
+        if ($this->organization->id == $this->department->organization_id && $this->department->id == $this->job->department_id) {
             return true;
         }
 

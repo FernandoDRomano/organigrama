@@ -30,7 +30,7 @@ class ObligationRequest extends FormRequest
         $job = $this->route()->parameter('job');
 
         return [
-            "description" => "required|min:3",
+            "description" => "required|min:3|max:120",
             "job_id" => [
                 "bail",
                 "required",

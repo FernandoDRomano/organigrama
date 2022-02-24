@@ -17,6 +17,7 @@ class ObligationResource extends JsonResource
         return [
             "id" => $this->id,
             "description" => $this->description,
+            "job" => JobResource::make($this->whenLoaded('job'))
         ];
     }
 }

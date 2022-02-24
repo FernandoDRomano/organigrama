@@ -15,7 +15,7 @@ class CreateObligationsTable extends Migration
     {
         Schema::create('obligations', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
+            $table->string('description', 120);
             $table->foreignId('job_id')->constrained('jobs')->onDelete('cascade');
             $table->timestamps();
         });

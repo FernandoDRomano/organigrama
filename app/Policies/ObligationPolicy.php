@@ -15,53 +15,53 @@ class ObligationPolicy
 
     public function viewAny(User $user, Organization $organization, Department $department, Job $job)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id
+               $organization->id == $department->organization_id
                && 
-               $department->id === $job->department_id;
+               $department->id == $job->department_id;
     }
 
     public function view(User $user, Obligation $obligation, Organization $organization, Department $department, Job $job)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id
+               $organization->id == $department->organization_id
                && 
-               $department->id === $job->department_id
+               $department->id == $job->department_id
                && 
-               $job->id === $obligation->job_id;
+               $job->id == $obligation->job_id;
     }
 
     public function create(User $user, Organization $organization, Department $department, Job $job)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id
+               $organization->id == $department->organization_id
                && 
-               $department->id === $job->department_id;
+               $department->id == $job->department_id;
     }
 
     public function update(User $user, Obligation $obligation, Organization $organization, Department $department, Job $job)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id
+               $organization->id == $department->organization_id
                && 
-               $department->id === $job->department_id
+               $department->id == $job->department_id
                && 
-               $job->id === $obligation->job_id;
+               $job->id == $obligation->job_id;
     }
 
     public function delete(User $user, Obligation $obligation, Organization $organization, Department $department, Job $job)
     {
-        return $user->id === $organization->user_id
+        return $user->id == $organization->user_id
                &&
-               $organization->id === $department->organization_id
+               $organization->id == $department->organization_id
                && 
-               $department->id === $job->department_id
+               $department->id == $job->department_id
                && 
-               $job->id === $obligation->job_id;
+               $job->id == $obligation->job_id;
     }
 
 }

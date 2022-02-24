@@ -18,13 +18,13 @@ class ObligationCollection extends ResourceCollection
             "data" => $this->collection,
         ];
 
-        if ($this->collection->isNotEmpty()) {
-            $relationship = [
-                "job" => JobResource::make($this->collection->first()->job)
-            ];
+        // if ($this->collection->isNotEmpty()) {
+        //     $relationship = [
+        //         "job" => JobResource::make($this->collection->first()->job)
+        //     ];
 
-            $arr['relationship'] = $relationship;
-        }
+        //     $arr['relationship'] = $relationship;
+        // }
 
         return $arr;
     }
