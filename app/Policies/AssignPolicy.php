@@ -13,11 +13,11 @@ class AssignPolicy
 
     public function create(User $user, Organization $organization)
     {
-        return $user->id === $organization->user_id;
+        return $user->id == $organization->user_id;
     }
 
     public function delete(User $user, Assign $assign, Organization $organization)
     {
-        return $user->id === $organization->user_id;
+        return $user->id == $organization->user_id;
     }
 }
