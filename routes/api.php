@@ -53,7 +53,7 @@ Route::prefix('v1')->group(function(){
         Route::post('organizations/{organization}/assign', [AssignController::class, 'post'])->name('assign.store');
         Route::delete('organizations/{organization}/assign', [AssignController::class, 'destroy'])->name('assign.destroy');
 
-        Route::get('organizations/{organization}/organization-chart', OrganizationChartController::class);
+        Route::get('organizations/{organization}/organization-chart', OrganizationChartController::class)->name('organization-chart.view');
     });
 
 });

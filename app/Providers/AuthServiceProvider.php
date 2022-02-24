@@ -52,11 +52,11 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('view-organization-chart', function (User $user, Organization $organization) {
-            return $user->id === $organization->user_id;
+            return $user->id == $organization->user_id;
         });
 
         Gate::define('update-status-user', function (User $user) {
-            return  $user->role === User::ROLE_ADMIN;
+            return  $user->role == User::ROLE_ADMIN;
         });
     }
 }
