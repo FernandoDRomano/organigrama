@@ -18,7 +18,7 @@ class JobFactory extends Factory
     public function definition()
     {
         return [
-            "name" => $this->faker->jobTitle(),
+            "name" => $this->faker->sentence(2),
             "job_level_id" => JobLevel::factory(),
             "department_id" => Department::factory()
         ];
