@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Stevebauman\Purify\Facades\Purify;
 
 class Obligation extends Model
 {
@@ -25,5 +26,13 @@ class Obligation extends Model
     public function job()
     {
         return $this->belongsTo(Job::class);
+    }
+
+    /**
+     * MUTATORS
+     */
+    public function setDescriptionAttribute(String $value) :void
+    {
+        $this->attributes["description"] = Purify::clean($value);
     }
 }

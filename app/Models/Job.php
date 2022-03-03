@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Job extends Model
 {
@@ -34,4 +35,13 @@ class Job extends Model
     public function employes(){
         return $this->belongsToMany(Employe::class)->using(Assign::class)->withTimestamps();
     }
+
+    /**
+     * MUTATORS
+     */
+    public function setNameAttribute(String $value) :void
+    {
+        $this->attributes["name"] = Purify::clean($value);
+    }
+
 }

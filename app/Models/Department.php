@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Stevebauman\Purify\Facades\Purify;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Department extends Model
 {
@@ -33,5 +34,13 @@ class Department extends Model
 
     public function jobs(){
         return $this->hasMany(Job::class);
+    }
+
+    /**
+     * MUTATORS
+     */
+    public function setNameAttribute(String $value) :void
+    {
+        $this->attributes["name"] = Purify::clean($value);
     }
 }

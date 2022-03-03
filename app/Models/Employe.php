@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Stevebauman\Purify\Facades\Purify;
 
 class Employe extends Model
 {
@@ -31,4 +32,33 @@ class Employe extends Model
     public function jobs(){
         return $this->belongsToMany(Job::class)->using(Assign::class)->withTimestamps();
     }
+
+    /**
+     * MUTATORS
+     */
+    public function setFirstNameAttribute(String $value) :void
+    {
+        $this->attributes["first_name"] = Purify::clean($value);
+    }
+
+    public function setLastNameAttribute(String $value) :void
+    {
+        $this->attributes["last_name"] = Purify::clean($value);
+    }
+
+    public function setDniAttribute(String $value) :void
+    {
+        $this->attributes["dni"] = Purify::clean($value);
+    }
+
+    public function setDateOfBirthAttribute(String $value) :void
+    {
+        $this->attributes["date_of_birth"] = Purify::clean($value);
+    }
+
+    public function setAddressAttribute(String $value) :void
+    {
+        $this->attributes["address"] = Purify::clean($value);
+    }
+
 }

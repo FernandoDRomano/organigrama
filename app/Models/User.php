@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Laravel\Sanctum\HasApiTokens;
+use Stevebauman\Purify\Facades\Purify;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -60,4 +61,10 @@ class User extends Authenticatable
         return $this->hasMany(Organization::class);
     }
 
+    /**
+     * MUTATORS
+     */
+    public function setNameAttribute(String $value) :void{
+        $this->attributes["name"] = Purify::clean($value);
+    }
 }
